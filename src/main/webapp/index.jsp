@@ -12,7 +12,7 @@
         <form action="servletReserva">
             Entrada: <input type="date" name="entrada">
             Salida: <input type="date" name="salida">
-            <select name="operacion">
+            <select name="tiporeserva">
                 <option value="normal">Normal</option>
                 <option value="superior">Superior</option>
             </select>

@@ -5,46 +5,65 @@
  */
 package Modelo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import static java.time.temporal.ChronoUnit.DAYS;
+import java.util.Date;
+
 /**
  *
  * @author DAW-B
  */
 public class Reserva {
-    private String fechaEntrada, fechaSalida, tipoReserva;
+    private LocalDate fechaentrada, fechasalida;
+    private String  tiporeserva;
 
-    public Reserva(String fechaEntrada, String fechaSalida, String tipoReserva) {
-        this.fechaEntrada = fechaEntrada;
-        this.fechaSalida = fechaSalida;
-        this.tipoReserva = tipoReserva;
+
+
+    public Reserva(String fechaEntrada, String fechaSalida, String tipoReserva) throws ParseException {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.fechaentrada = LocalDate.parse(fechaEntrada,dtf);
+        this.fechasalida =  LocalDate.parse(fechaSalida,dtf);
+        this.tiporeserva = tipoReserva;
     }
 
-    public String getFechaEntrada() {
-        return fechaEntrada;
+    public LocalDate getFechaentrada() {
+        return fechaentrada;
     }
 
-    public String getFechaSalida() {
-        return fechaSalida;
+    public LocalDate getFechasalida() {
+        return fechasalida;
     }
 
-    public String getTipoReserva() {
-        return tipoReserva;
+    public String getTiporeserva() {
+        return tiporeserva;
     }
     
-    public double getPrecioTotal(){
-        int diaEntrada = Integer.parseInt(fechaEntrada.substring(0, 3));
-        int diaSalida = Integer.parseInt(fechaSalida.substring(0, 3));
+    public long getNumeronoches(){
+        return DAYS.between(this.fechaentrada, this.fechasalida);
+    }
+    
+    public double getPrecioconiva(){
+        return getPreciototal() * 1.21;
+    }
+    
+    public double getPreciototal(){
+        
+        
         double precioTotal = 0;
-        double precioConIva = 0;
         
-        int dias = diaSalida - diaEntrada;
+        long dias = DAYS.between(this.fechaentrada, this.fechasalida);
         
-        if (tipoReserva.equalsIgnoreCase("normal")) {
-            precioTotal = 50 * dias;
-            precioConIva = precioTotal * 1.21;
+        if (this.tiporeserva.equalsIgnoreCase("normal")) {
+            precioTotal = 50 * (dias);
         }
         
-        if (tipoReserva.equalsIgnoreCase("superior")) {
-            
+        if (this.tiporeserva.equalsIgnoreCase("superior")) {
+            precioTotal = 75 * (dias);
         }
         
         return precioTotal;
